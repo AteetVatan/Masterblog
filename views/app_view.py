@@ -1,6 +1,6 @@
 """Module for App Flask to initialize and handle routes."""
 
-from flask import Flask, redirect, url_for
+from flask import Flask, redirect, url_for, jsonify
 from views.blog_view import BlogView
 
 
@@ -26,3 +26,11 @@ class AppView:
             # add code here to fetch the job posts from a file
             end_point = f"{view.blue_print_name}.get_all_blogs"
             return redirect(url_for(end_point))
+
+        @self.app.errorhandler(404)
+        def not_found_error(error):
+            return jsonify({"error": "Not Found"}), 404
+
+        @self.app.errorhandler(405)
+        def method_not_allowed_error(error):
+            return jsonify({"error": "Method Not Allowed"}), 405
