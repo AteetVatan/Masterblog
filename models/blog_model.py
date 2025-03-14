@@ -5,35 +5,38 @@ from typing import Optional
 
 class BlogModel:
     """Class for Blog Data structure."""
-    __id: int
+    __blog_id: int
     __author: str
     __title: str
     __content: str
     __notes: Optional[str] = None
+    __likes: int = 0
 
     def __init__(self,
                  blog_id,
                  author,
                  title,
                  content,
-                 notes=None):
-        self.id = blog_id
+                 notes="",
+                 likes=0):
+        self.blog_id = blog_id
         self.author = author
         self.title = title
         self.content = content
         self.notes = notes
+        self.likes = likes
 
     @property
-    def id(self):
+    def blog_id(self):
         """The Unique Blog Id property getter."""
-        return self.__id
+        return self.__blog_id
 
-    @id.setter
-    def id(self, val):
+    @blog_id.setter
+    def blog_id(self, val):
         """The Unique Blog Id property setter."""
         if not isinstance(val, int) or val <= 0:
             raise ValueError("ID must be a positive integer.")
-        self.__id = val
+        self.__blog_id = val
 
     @property
     def author(self):
@@ -82,6 +85,18 @@ class BlogModel:
     def notes(self, val):
         """The Blog notes property setter."""
         self.__notes = val
+
+    @property
+    def likes(self):
+        """The Blog notes property getter."""
+        return self.__likes
+
+    @likes.setter
+    def likes(self, val):
+        """The Blog notes property setter."""
+        if  not isinstance(val,(int,float)):
+            raise ValueError("Blog likes should be a number")
+        self.__likes = int(val)
 
     @classmethod
     def get_class_properties(cls):

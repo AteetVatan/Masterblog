@@ -3,26 +3,72 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Flask Blog</title>
+    <title>Master Blog</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Welcome to My Flask Blog!</h1>
+<h1>Welcome to Master Blog!</h1>
 
-    <a href="{{ url_for(add_blog) }}" class="add-blog-btn">
-        <span class="plus-icon">+</span>Add a New Blog
-    </a>
+<a href="{{ url_for(add_blog) }}" class="add-blog-btn">
+    <span class="plus-icon">+</span>Add a New Blog
+</a>
 
-    {% for blog in posts %}
-        <div class="post">
-            <h2>{{ blog.title }}</h2>
-            <p><em>{{ blog.author}}</em></p>
-            <p>{{ blog.content }}</p>
+{% for blog in posts %}
+<div class="post">
+    <div class="post-buttons">
+        <form action="{{ url_for(update_blog, post_id=blog.blog_id) }}" method="GET">
+            <button type="submit" class="update-btn" title="update blog">✎</button>
+        </form>
+        <form action="{{ url_for(delete_blog, post_id=blog.blog_id) }}" method="POST" class="delete-form">
+            <button type="submit" class="delete-btn" title="delete blog">✖</button>
+        </form>
+    </div>
 
-            {% if blog.notes %}
-                <mark>{{ blog.notes }}</mark>
-            {% endif %}
-        </div>
-    {% endfor %}
+    <h2 title="Blog Title">{{ blog.title }}</h2>
+    <p title="Author"><em>{{ blog.author}}</em></p>
+    <p title="Content">{{ blog.content }}</p>
+
+    {% if blog.notes %}
+    <mark title="Notes">{{ blog.notes }}</mark>
+    {% endif %}
+    <div class="post-buttons post-buttons-bottom">
+        <button type="button" class="like-btn update-btn" post_id="{{ blog.blog_id }}" title="Like blog">❤</button>
+
+        <p id="like_count_p_{{ blog.blog_id }}" {% if blog.likes== 0 %}style="display: none;" {% endif %}>
+            <span id="like_count_span_{{ blog.blog_id }}">{{ blog.likes }}</span> likes
+        </p>
+
+    </div>
+</div>
+{% endfor %}
+
+<script>
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('like-btn')) {
+            let postId = event.target.getAttribute('post_id');
+            fetch('/update_likes', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ post_id: postId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                let like_count_span = document.getElementById('like_count_span_' + data.post_id);
+                if (like_count_span) {
+                    like_count_span.innerText = data.likes;
+                }
+                let like_count_p = document.getElementById('like_count_p_' + data.post_id);
+                if (like_count_p) {
+                    if (data.likes > 0) {
+                        like_count_p.style.display = "inline";
+                    }else{
+                        like_count_p.style.display = "none";
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    });
+</script>
 </body>
 </html>

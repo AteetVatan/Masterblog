@@ -12,10 +12,13 @@
         <h1 class="card__title">ADD BLOG</h1>
         <form action="/add" method="POST" class="form-group">
             <p class="card__text"></p>
-            <input type="text" id="author" name="author" placeholder="Author" required class="input-field"><br>
-            <input type="text" id="title" name="title" placeholder="Blog Title" required class="input-field"><br>
-            <textarea id="content" name="content" placeholder="Enter your Blog here..."></textarea>
-            <textarea id="notes" name="notes" placeholder="Enter notes (optional)..."></textarea><br>
+            <input type="text" id="author" name="author" title="Author" placeholder="Author" required
+                   class="input-field"><br>
+            <input type="text" id="title" name="title" title="Blog Title" placeholder="Blog Title" required
+                   class="input-field"><br>
+            <textarea id="content" name="content" title="Content" placeholder="Enter your Blog here..."
+                      required></textarea>
+            <textarea id="notes" name="notes" title="Notes" placeholder="Enter notes (optional)..."></textarea><br>
             <input type="submit" value="Submit" class="submit-button">
         </form>
     </div>

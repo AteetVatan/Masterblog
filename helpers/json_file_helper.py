@@ -1,7 +1,7 @@
 """Module to create, read and write JSON data"""
 import json
 import os
-from .print_helper import PrintHelper
+from helpers.print_helper import PrintHelper
 
 
 class JsonFileHelper:
@@ -23,11 +23,9 @@ class JsonFileHelper:
         return d
 
     @staticmethod
-    def write_data(self, data, file_path):
+    def write_data(data, file_path):
         """Method to write JSON data to file"""
         try:
-            if not file_path:
-                file_path = self.file_path
             if data is None:
                 data = {}
             with open(file_path, mode="w", encoding="utf-8") as file:
