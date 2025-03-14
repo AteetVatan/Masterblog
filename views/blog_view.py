@@ -1,6 +1,4 @@
 """Module for Blog Flask Blueprint to handle routes."""
-import json
-
 from flask import request, Blueprint, render_template, redirect, url_for, jsonify
 from viewmodels import BlogViewModel
 
@@ -103,7 +101,7 @@ class BlogView:
         def update_likes():
             """Handles like button clicks and returns updated like count."""
             try:
-                data = json.loads(request.data)
+                data = request.get_json()
                 post_id = int(data.get("post_id", 0))
                 like_count = self.__blog_view_model.update_likes(post_id)
                 return jsonify({"post_id": post_id, "likes": like_count})
